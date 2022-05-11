@@ -7,6 +7,72 @@
 #define MEALS 100        //The number of meals per philosopher
 
 static omp_lock_t chopsticks[NUM_PHIL];   //Locks to represent chopsticks
+
+int encrypt(char* eMessage, int key){
+
+char ch;
+int i;
+
+ for(i = 0; eMessage[i] != '\0'; ++i){
+            ch = eMessage[i];
+
+            if(ch >= 'a' && ch <= 'z'){
+                ch = ch + key;
+
+                if(ch > 'z'){
+                    ch = ch - 'z' + 'a' - 1;
+                }
+
+                eMessage[i] = ch;
+            }
+            else if(ch >= 'A' && ch <= 'Z'){
+                ch = ch + key;
+
+                if(ch > 'Z'){
+                    ch = ch - 'Z' + 'A' - 1;
+                }
+
+                eMessage[i] = ch;
+            }
+        }
+
+        printf("\nEncrypted message: %s", eMessage);
+	printf("\nYour Key: %d",key); 
+
+}
+
+int decrypt(char* dMessage, int dkey){
+
+char ch;
+int i;
+char message[1000];
+
+                  for(i = 0; dMessage[i] != '\0'; ++i){
+                    ch = dMessage[i];
+
+                    if(ch >= 'a' && ch <= 'z'){
+                        ch = ch - dkey;
+
+                        if(ch < 'a'){
+                            ch = ch + 'z' - 'a' + 1;
+                        }
+
+                        dMessage[i] = ch;
+                    }
+                    else if(ch >= 'A' && ch <= 'Z'){
+                        ch = ch - dkey;
+
+                        if(ch < 'A'){
+                            ch = ch + 'Z' - 'A' + 1;
+                        }
+
+                        dMessage[i] = ch;
+                    }
+                }
+
+	printf("\n Decrypted message: %s\n", dMessage);
+}	
+
 void philosopher()
 {
   //Wait for all threads to start
@@ -85,9 +151,35 @@ int main(int argc, char ** argv)
 //        number += numbers[i] / numbers[i + 1];
 //  }
   number = numbers[0] / numbers[1] * numbers[2] / numbers[3] *numbers[4];
-  num = (int)number;
+  num = (int)number;  //random number
+  num = num % 10;
   printf("%d \n", num);
   fclose(fptr);
   remove("numbers.txt");
+
+//UI
+  
+  int userchoice;
+  int deckey;
+  char userstring[1000];
+  char encrmessage[1000];
+
+  printf("Do you want to encrypt or decrypt a message (1 or 2)?\n");
+  scanf("%d", &userchoice);
+
+  if (userchoice == 1){
+	printf("\nEnter the message you would like to encrypt: ");
+	scanf("%s", userstring);
+	encrypt(userstring, num);
+  }else if (userchoice == 2){
+	printf("\nEnter the encrypted message you would like to decrypt: ");
+	scanf("%s", encrmessage);
+	printf("\nEnter the decryption key: ");
+	scanf("%d", &deckey);
+	decrypt(encrmessage, deckey);
+  }else{
+	printf("Invalid!");	  
+  }
   return 0;
 }
+
