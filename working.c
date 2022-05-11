@@ -123,7 +123,7 @@ int main(int argc, char ** argv)
 {
   int i;
   FILE *file;
-  fopen(file, "a");
+  file = fopen("output.txt", "a");
   //Initialize locks
   for(i = 2; i < NUM_PHIL; i++)
     omp_init_lock(&chopsticks[i]);
