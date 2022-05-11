@@ -122,7 +122,8 @@ void philosopher()
 int main(int argc, char ** argv)
 {
   int i;
-
+  FILE *file;
+  fopen(file, "a");
   //Initialize locks
   for(i = 2; i < NUM_PHIL; i++)
     omp_init_lock(&chopsticks[i]);
@@ -154,6 +155,7 @@ int main(int argc, char ** argv)
   num = (int)number;  //random number
   num = num % 10;
   printf("random num: %d \n", num);
+  fprintf(file, "%d,", num);
   fclose(fptr);
   remove("numbers.txt");
 
@@ -181,6 +183,7 @@ int main(int argc, char ** argv)
 	printf("Invalid!");	  
   }
   */
+ flcose(file)
   return 0;
 }
 
